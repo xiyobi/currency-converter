@@ -2,6 +2,7 @@
 class Currency{
 
     const Currency_API_URL = "https://cbu.uz/uz/arkhiv-kursov-valyut/json/";
+
     public array $currencies = [];
     public function __construct(){
 
