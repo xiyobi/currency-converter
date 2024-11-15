@@ -1,0 +1,75 @@
+
+.currency-card {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 30px;
+    background: #fff;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+    border-radius: 12px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.currency-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
+}
+
+.currency-section {
+    padding: 80px 20px;
+    background-color: #f0f4f8;
+}
+
+.info-section {
+    padding: 60px 20px;
+    text-align: center;
+    background-color: #e9ecef;
+}
+
+.btn-primary-custom {
+    background-color: #d32f2f;
+    border: none;
+    color: #fff;
+    padding: 10px 20px;
+    border-radius: 6px;
+    transition: background-color 0.3s ease;
+}
+
+.btn-primary-custom:hover {
+    background-color: #b71c1c;
+    color: #fff;
+}
+
+
+.weather-card {
+    max-width: 400px;
+    margin: 30px auto;
+    padding: 25px;
+    border-radius: 12px;
+    background: #f8f9fa;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.weather-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
+}
+
+.weather-icon {
+    font-size: 4rem;
+    color: #0d6efd;
+    margin-bottom: 20px;
+}
+
+@media (max-width: 768px) {
+    .currency-section {
+        padding: 40px 10px;
+    }
+    .info-section {
+        padding: 40px 10px;
+    }
+    .currency-card, .weather-card {
+        max-width: 100%;
+        margin: 20px;
+    }
+}
