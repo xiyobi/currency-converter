@@ -1,15 +1,21 @@
 <?php
+require "vendor/autoload.php";
+use GuzzleHttp\Client;
 class Bot {
     const API_URL = 'https://api.telegram.org/bot';
+    public $client;
     private $token = "7020930131:AAE-2OF_-xf-lQXgxnbHFZsHVDIYpPA--_Y";
 
+
     public function makeRequest($method, $data = []) {
-        $ch = curl_init(self::API_URL . $method);
-        curl_setopt($ch, CURLOPT_URL, self::API_URL . $this->token . '/' . $method);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-        curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($data));
-        $response = curl_exec($ch);
-        curl_close($ch);
-        return json_decode($response); // Javobni qaytarish va JSON formatiga o'tkazish
+        $this->client = new Client([
+            'base_uri' => self::API_URL.$this->token.'/',
+            'timeout'  => 2.0,
+        ]);
+
+        $response = $this->client->request('POST',$method, [
+            'form_params' => $data
+        ]);
+        return json_decode($response->getBody()->getContents(),true);
     }
 }

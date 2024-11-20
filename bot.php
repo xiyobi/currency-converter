@@ -1,35 +1,57 @@
 <?php
-require 'src/Bot.php';
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+
+require 'vendor/autoload.php';
+
 $bot = new Bot();
-require 'src/Currency.php';
-require 'src/Weather.php';
-
 $weather = new Weather();
-
-
 $currency = new Currency();
+
+$weatherdata = $weather->getWeather();
 $currencies = $currency->getCurrencies();
 
-$update = json_decode(file_get_contents('php://input'),true);
-$massage = $update['massage'];
-if (isset($message['text'])) {
-    $text = $update->message->text;
-    $from_id = $update->message->from->id;
-//    $fromW_id = $update->message->from->id;
-//    $textW = $update->message->text;
+$data = json_decode(file_get_contents('php://input'));
 
-$data = json_decode(file_get_contents('php://input', true));
+var_dump($data);
 
-$weather = $data['weather'][0];
-$main = $weather['main'];
-$description = $weather['description'];
-$icon = $weather['icon'];
+$response = $bot->makeRequest('sendMessage', [
+    'chat_id' => $data->message->chat->id,
+    'text' => "Hello World! <a href='https://core.telegram.org/bots/'>Click here</a>",
+    'parse_mode' => 'HTML',
+]);
+if (!$response->ok) {
+    $bot->makeRequest('sendMessage', [
+        'chat_id' => $data->message->chat->id,
+        'text' => "Error: " . json_encode($response),
+    ]);
+}
 
-    if ($text=='/startW'){
-        $response = $bot->makeRequest('weather',[
-            'main' => $main,
-            'description' => $description,
-            'icon' => $icon,
+if (isset($data->message)) {
+    $message = $data->message;
+    $text = $message->text;
+    $from_id = $message->from->id;
+
+    $weather=$weather->getWeather();
+    if (isset($data->weather)) {
+        $weather = $data->weather[0];
+        $main = $weather->main;
+        $icon = $weather->icon;
+
+    }
+
+    if ($text=='/weather'){
+        $information_list = "";
+        $information_list .= "Toshkent"."\n";
+        $information_list .= "Harorat"." ".($weather)."C"."\n";
+        $information_list .= "Namlik"." ".($main)."%"."\n";
+        $information_list .= "posim"." ".($icon)."pa"."\n";
+
+
+        $response = $bot->makeRequest('sendMessage', [
+            'chat_id' => $from_id,
+            'parse_mode' => 'HTML',
+            'text'=> $information_list
         ]);
     }
     if ($text == '/start') {
@@ -45,8 +67,8 @@ $icon = $weather['icon'];
             ]);
         }
     }
-    
-    if ($text == $currency) {
+
+    if ($text == '/currency') {
         $currencies = $currency->getCurrencies();
 
         if ($currencies) {

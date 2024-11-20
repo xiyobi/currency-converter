@@ -1,17 +1,31 @@
 <?php
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+    require 'vendor/autoload.php';
+    use GuzzleHttp\Client;
     class Weather{
-        const WEATHER_API_URL = 'https://api.openweathermap.org/data/2.5/weather?q=Tashkent&appid=1f2c4527291b18aaab758440a1f8e071';
-        public  $weather_data = [];
+        const WEATHER_API_URL = 'https://api.openweathermap.org/data/2.5/';
+        public $client;
         public  function __construct()
         {
-            $ch= curl_init();
-            curl_setopt($ch, CURLOPT_URL, self::WEATHER_API_URL);
-            curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-            $response = curl_exec($ch);
-            curl_close($ch);
-            $this->weather_data = json_decode($response);
+            $this->client = new Client([
+                'base_uri' => self::WEATHER_API_URL,
+                'timeout'  => 2.0,
+            ]);
         }
         public function getWeather(){
-            return $this->weather_data;
+
+            $response = $this->client->request('GET', 'weather', [
+                'query' => [
+                    'q' => 'Tashkent',
+                    'appid'=>'1f2c4527291b18aaab758440a1f8e071',
+                    'units'=>'metric',
+                    'lang'=>'uz'
+                ]
+            ]);
+            return json_decode($response->getBody(), true);
+
         }
     }
+$weather = new Weather();
+print_r($weather->getWeather());
