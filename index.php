@@ -1,21 +1,19 @@
 
 <?php
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
 
-require_once "vendor/autoload.php";
-use GuzzleHttp\Client;
+$uri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
 
-$client = new Client([
-    'base_uri' => 'https://api.telegram.org/bot7020930131:AAE-2OF_-xf-lQXgxnbHFZsHVDIYpPA--_Y/',
-    'timeout'  => 2.0,
-]);
-$request = $client->request('GET', 'getMe');
-var_dump($request->getBody()->getContents());
-
-
-//
-//    require 'src/Currency.php';
-//    $currency = new Currency();
-//    require 'recources/Views/currency-conventer.php';
+if ($uri == '/weather') {
+        require 'weather.php';
+} elseif($uri == '/currency') {
+        require 'src/Currency.php';
+        $currency = new Currency();
+    require 'recources/Views/currency-conventer.php';
+}elseif ($uri == '/telegram') {
+    require 'app/bot.php';
+    $bot = new Bot();
+}
+else{
+    echo "404 no found page";
+}
 ?>

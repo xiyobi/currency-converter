@@ -72,7 +72,7 @@
 <div class="info-section bg-light">
     <h4 class="fw-bold">Let’s look weather</h4>
     <p class="text-muted">information of Weather</p>
-    <a class="btn btn-outline-danger" href="./weather.php">Weather</a>
+    <a class="btn btn-outline-danger" href="/weather">Weather</a>
 </div>
 </body>
 </html>

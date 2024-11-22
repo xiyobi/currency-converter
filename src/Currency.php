@@ -15,13 +15,8 @@ class Currency
             'timeout'  => 2.0,
         ]);
 
-//        $ch = curl_init();
-//        curl_setopt($ch, CURLOPT_URL, self::Currency_API_URL);
-//        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-//        $output = curl_exec($ch);
-//        curl_close($ch);
 
-        $decoded = json_decode($this->client->request('GET', ''));
+        $decoded = json_decode($this->client->request('GET', '')->getBody()->getContents());
         if ($decoded) {
             $this->currencies = $decoded;
             array_unshift($this->currencies, (object)[
@@ -38,7 +33,7 @@ class Currency
         foreach ($this->currencies as $currency) {
             $separated_data[$currency->Ccy] = $currency->Rate;
         }
-        return array_slice($separated_data, 0, 5); // Barcha valyutalarni qaytarish uchun tuzatildi
+        return array_slice($separated_data, 0, 5);
     }
 
     public function exchange(string $fromCurrency, string $toCurrency, float $amount)
@@ -53,18 +48,17 @@ class Currency
             return "Valutalar bir xil.";
         }
 
-        // UZS dan boshqa valyutaga almashtirish
         if ($fromCurrency == 'UZS') {
-            return $amount / (float)$currencies[$toCurrency];
+            $result =  $amount / (float)$currencies[$toCurrency];
+            return $amount . ' ' . $fromCurrency . '=' . $result . ' ' . $toCurrency;
         }
 
-        // Boshqa valyutadan UZSga almashtirish
         if ($toCurrency == 'UZS') {
-            return $amount * (float)$currencies[$fromCurrency];
+            $result=$amount * (float)$currencies[$fromCurrency];
+            return $amount . ' ' . $fromCurrency . ' = ' . $result . ' ' . $toCurrency;
         }
 
-        // Valyutani boshqa valyutaga almashtirish
-        $converted_to_uzs = $amount * (float)$currencies[$fromCurrency];
-        return $converted_to_uzs / (float)$currencies[$toCurrency];
+//        $converted_to_uzs = $amount * (float)$currencies[$fromCurrency];
+//        return $converted_to_uzs / (float)$currencies[$toCurrency];
     }
 }

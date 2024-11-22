@@ -1,6 +1,5 @@
 <?php
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
+
     require 'vendor/autoload.php';
     use GuzzleHttp\Client;
     class Weather{
@@ -23,9 +22,10 @@ ini_set('display_startup_errors', 1);
                     'lang'=>'uz'
                 ]
             ]);
-            return json_decode($response->getBody(), true);
+            var_dump($response->getStatusCode());
+            return json_decode($response->getBody());
 
         }
     }
-$weather = new Weather();
-print_r($weather->getWeather());
+//$weather = new Weather();
+//print_r($weather->getWeather());
