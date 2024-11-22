@@ -1,13 +1,14 @@
 <?php
 
 class DB{
+
     public $host = "localhost";
     public $user = "root";
     public $pass = "1234";
-    public $dbname = "bot";
+    public $db_name = "bot";
     public $conn;
     public function __construct(){
-        $this->conn = new PDO($this->host, $this->user, $this->pass, $this->dbname);
+        $this->conn = new PDO("mysql:host=$this->host;dbname=$this->db_name", $this->user, $this->pass);
 
     }
 
